@@ -20,6 +20,11 @@ jobs:
         run: npm run test
         env:
           ENVIRONMENT: "test"
+          BOT_CLIENT_ID: ""
+          BOT_TOKEN: ""
+          MONGODB_URI: ""
+          PERSPECTIVE_API_TOKEN: ""
+
       - uses: docker://sonarsource/sonar-scanner-cli:latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
