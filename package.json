@@ -1,0 +1,50 @@
+{
+    "name": "mcarcades-discord-bot",
+    "version": "1.0.0",
+    "description": "McArcades' Discord Bot",
+    "main": "src/app.ts",
+    "scripts": {
+        "start": "ts-node src/app.ts",
+        "build": "npx tsc",
+        "test": "jest --coverage",
+        "prepare": "husky install"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/McArcades/discord-bot.git"
+    },
+    "keywords": [
+        "mcarcades"
+    ],
+    "author": "McArcades",
+    "license": "GPL-3.0-or-later",
+    "bugs": {
+        "url": "https://github.com/McArcades/discord-bot/issues"
+    },
+    "homepage": "https://github.com/McArcades/discord-bot#readme",
+    "dependencies": {
+        "discord.js": "^14.9.0",
+        "dotenv": "^16.0.3",
+        "mongodb": "^5.3.0"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^17.6.1",
+        "@commitlint/config-conventional": "^17.6.1",
+        "@types/jest": "^29.5.1",
+        "@types/mongodb": "^4.0.7",
+        "@types/node": "^18.16.1",
+        "@typescript-eslint/eslint-plugin": "^5.59.1",
+        "@typescript-eslint/parser": "^5.59.1",
+        "eslint": "^8.39.0",
+        "husky": "^8.0.0",
+        "jest": "^29.5.0",
+        "lint-staged": "^13.2.2",
+        "prettier": "^2.8.8",
+        "ts-jest": "^29.1.0",
+        "typescript": "^5.0.4"
+    },
+    "lint-staged": {
+        "*.{js,ts,tsx}": "eslint --cache --fix",
+        "*.{js,ts,tsx,css,md}": "prettier --write"
+    }
+}

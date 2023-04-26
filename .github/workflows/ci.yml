@@ -1,0 +1,27 @@
+name: Build
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  analysis:
+    name: Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Install modules
+        run: npm install
+      - name: Run tests
+        run: npm run test
+        env:
+          ENVIRONMENT: "test"
+      - uses: docker://sonarsource/sonar-scanner-cli:latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
