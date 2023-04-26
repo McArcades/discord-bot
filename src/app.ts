@@ -2,7 +2,6 @@ import * as dotenv from "dotenv";
 import { Client, GatewayIntentBits } from "discord.js";
 import { connect } from "./helper/database";
 import { Db } from "mongodb";
-import assert from "assert";
 import { MODULES } from "./modules/modules";
 
 async function initDiscordClient(): Promise<Client> {
@@ -17,7 +16,6 @@ async function initDiscordClient(): Promise<Client> {
 }
 
 async function initDatabaseClient(): Promise<Db> {
-    assert(process.env.MONGODB_URI != null);
     return await connect(process.env.MONGODB_URI);
 }
 
