@@ -11,16 +11,22 @@ jest.mock("../../../src/helper/utils", () => ({
 describe("Handler", () => {
     let client: Client;
     let db: Db;
+    let commands: Collection<string, Command>;
 
     beforeEach(() => {
         client = new Client({ intents: [] });
         db = {} as Db;
+        commands = new Collection<string, Command>();
+    });
+
+    afterEach(() => {
+        jest.resetAllMocks();
     });
 
     it("should only register command files", async () => {
         const clientOnSpy = jest.spyOn(client, "on");
 
-        await handler(client, db, new Collection<string, Command>());
+        await handler(client, db, commands);
 
         expect(getFilesRecursive).toHaveBeenCalledWith(`${__dirname}/../../modules`.replace("tests", "src"));
         expect(clientOnSpy).toHaveBeenCalledTimes(0);
