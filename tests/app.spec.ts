@@ -2,20 +2,8 @@ import * as app from "../src/app";
 import { Db } from "mongodb";
 import { connect } from "../src/helper/database";
 
-jest.mock("dotenv", () => ({
-    config: jest.fn(),
-}));
-
 jest.mock("../src/helper/database", () => ({
     connect: jest.fn().mockResolvedValue({} as Db),
-}));
-
-jest.mock("../src/modules/modules", () => ({
-    MODULES: [
-        () => {
-            /* no-op */
-        },
-    ],
 }));
 
 jest.mock("discord.js", () => {
@@ -50,7 +38,7 @@ describe("App entry point", () => {
         jest.clearAllMocks();
     });
 
-    it("should start the application", async () => {
+    it("should connect to the database", async () => {
         // Given
         const connectSpy = jest.spyOn({ connect }, "connect");
 

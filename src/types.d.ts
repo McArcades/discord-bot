@@ -1,3 +1,5 @@
+import { Collection } from "discord.js";
+
 declare global {
     namespace NodeJS {
         interface ProcessEnv {
@@ -11,3 +13,9 @@ declare global {
 }
 
 export {};
+
+declare module "discord.js" {
+    export interface Client {
+        slashCommands: Collection<string, SlashCommand>;
+    }
+}
