@@ -1,9 +1,10 @@
-import { CommandInteraction, SlashCommandBuilder } from "discord.js";
+import { Client, CommandInteraction, SlashCommandBuilder } from "discord.js";
+import { Db } from "mongodb";
 
 interface Command {
     name: string;
     data: SlashCommandBuilder | any;
-    execute: (interaction: CommandInteraction) => Promise<void> | void;
+    execute: (client: Client, db: Db, interaction: CommandInteraction) => Promise<void> | void;
 }
 
 export default Command;

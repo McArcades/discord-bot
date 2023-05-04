@@ -1,10 +1,11 @@
 import Command from "../../model/command";
-import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import { Client, CommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import { Db } from "mongodb";
 
 const pingCommand: Command = {
     name: "ping",
     data: new SlashCommandBuilder().setName("ping").setDescription("Test la connexion du bot"),
-    execute: async (interaction) => {
+    execute: async (client: Client, db: Db, interaction: CommandInteraction) => {
         await interaction.reply({
             embeds: [
                 new EmbedBuilder()

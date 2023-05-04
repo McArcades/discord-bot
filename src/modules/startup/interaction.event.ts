@@ -10,7 +10,7 @@ const onInteraction: Event = {
         if (!interaction.isChatInputCommand()) return;
         const command = commands.get(interaction.commandName);
         if (!command) return;
-        await command.execute(interaction);
+        await command.execute(client, db, interaction);
     },
 };
 
