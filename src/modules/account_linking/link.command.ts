@@ -33,6 +33,7 @@ const linkCommand: Command = {
                         )
                         .setFooter({ text: "Récompense : 5000 Jetons et 5000 XP" }),
                 ],
+                ephemeral: true,
             });
         }
     },
