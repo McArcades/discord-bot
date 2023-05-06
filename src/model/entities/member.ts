@@ -9,28 +9,29 @@ export interface Member {
     betaAccess: boolean;
 }
 
-export function fetchFromUUID(minecraftUUID: string, db: Db): Promise<Member | null> {
-    return new Promise((resolve) => {
-        const res = db.collection(`${process.env.DATABASE_PREFIX}discordprofiles`).findOne({ UUID: minecraftUUID });
-        resolve(mapToMember(res));
-    });
+export async function fetchFromUUID(minecraftUUID: string, db: Db): Promise<Member | null> {
+    return mapToMember(await db.collection(`${process.env.DATABASE_PREFIX}${COLLECTION_NAME}`).findOne({ UUID: minecraftUUID }));
 }
 
 export async function fetchFromDiscordID(discordID: string, db: Db): Promise<Member | null> {
-    return mapToMember(await db.collection(`${process.env.DATABASE_PREFIX}discordprofiles`).findOne({ DiscordID: discordID }));
+    return mapToMember(await db.collection(`${process.env.DATABASE_PREFIX}${COLLECTION_NAME}`).findOne({ DiscordID: discordID }));
 }
 
 export async function linkMinecraftAccount(discordID: string, uuid: string, db: Db): Promise<void> {
     const res = await db
-        .collection(`${process.env.DATABASE_PREFIX}discordprofiles`)
+        .collection(`${process.env.DATABASE_PREFIX}${COLLECTION_NAME}`)
         .findOne({ $or: [{ DiscordID: discordID }, { UUID: uuid }] });
     if (!res) {
         await db
-            .collection(`${process.env.DATABASE_PREFIX}discordprofiles`)
+            .collection(`${process.env.DATABASE_PREFIX}${COLLECTION_NAME}`)
             .insertOne({ DiscordID: discordID, UUID: uuid, PrivateBetaAccess: false });
     } else {
-        await db.collection(`${process.env.DATABASE_PREFIX}discordprofiles`).updateOne({ DiscordID: discordID }, { $set: { UUID: uuid } });
-        await db.collection(`${process.env.DATABASE_PREFIX}discordprofiles`).updateOne({ UUID: uuid }, { $set: { DiscordID: discordID } });
+        await db
+            .collection(`${process.env.DATABASE_PREFIX}${COLLECTION_NAME}`)
+            .updateOne({ DiscordID: discordID }, { $set: { UUID: uuid } });
+        await db
+            .collection(`${process.env.DATABASE_PREFIX}${COLLECTION_NAME}`)
+            .updateOne({ UUID: uuid }, { $set: { DiscordID: discordID } });
     }
 }
 
