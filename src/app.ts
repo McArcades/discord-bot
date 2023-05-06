@@ -5,6 +5,8 @@ import { Db } from "mongodb";
 import assert from "assert";
 import { getFilesRecursive } from "./helper/utils";
 import Command from "./model/command";
+import express, { Express } from "express";
+import { initializeRoutes } from "./helper/routes";
 
 async function initDiscordClient(): Promise<Client> {
     return new Client({
@@ -13,6 +15,7 @@ async function initDiscordClient(): Promise<Client> {
             GatewayIntentBits.GuildMessages,
             GatewayIntentBits.GuildMessageReactions,
             GatewayIntentBits.MessageContent,
+            GatewayIntentBits.GuildMembers,
         ],
     });
 }
@@ -44,6 +47,11 @@ export async function main() {
     console.debug("Initializing modules...");
     const commands = new Collection<string, Command>();
     await initModules(client, db, commands);
+
+    // init api
+    console.debug("Initializing API...");
+    const expressApp: Express = express();
+    initializeRoutes(expressApp, client, db);
 
     // client auth
     await client.login(process.env.BOT_TOKEN);

@@ -1,0 +1,51 @@
+import { Db } from "mongodb";
+import CryptoJS from "crypto-js";
+
+const COLLECTION_NAME = "discordprofiles";
+
+export interface Member {
+    discordID: string;
+    minecraftUUID?: string;
+    betaAccess: boolean;
+}
+
+export function fetchFromUUID(minecraftUUID: string, db: Db): Promise<Member | null> {
+    return new Promise((resolve) => {
+        const res = db.collection(`${process.env.DATABASE_PREFIX}discordprofiles`).findOne({ UUID: minecraftUUID });
+        resolve(mapToMember(res));
+    });
+}
+
+export async function fetchFromDiscordID(discordID: string, db: Db): Promise<Member | null> {
+    return mapToMember(await db.collection(`${process.env.DATABASE_PREFIX}discordprofiles`).findOne({ DiscordID: discordID }));
+}
+
+export async function linkMinecraftAccount(discordID: string, uuid: string, db: Db): Promise<void> {
+    const res = await db
+        .collection(`${process.env.DATABASE_PREFIX}discordprofiles`)
+        .findOne({ $or: [{ DiscordID: discordID }, { UUID: uuid }] });
+    if (!res) {
+        await db
+            .collection(`${process.env.DATABASE_PREFIX}discordprofiles`)
+            .insertOne({ DiscordID: discordID, UUID: uuid, PrivateBetaAccess: false });
+    } else {
+        await db.collection(`${process.env.DATABASE_PREFIX}discordprofiles`).updateOne({ DiscordID: discordID }, { $set: { UUID: uuid } });
+        await db.collection(`${process.env.DATABASE_PREFIX}discordprofiles`).updateOne({ UUID: uuid }, { $set: { DiscordID: discordID } });
+    }
+}
+
+function mapToMember(dbResult: any): Member | null {
+    if (!dbResult) return null;
+    return {
+        discordID: dbResult.DiscordID,
+        minecraftUUID: dbResult.UUID,
+        betaAccess: dbResult.PrivateBetaAccess,
+    };
+}
+
+export function getTagHash(tag: string): string {
+    return CryptoJS.SHA256(tag + process.env.TAG_SALT)
+        .toString(CryptoJS.enc.Base64)
+        .replace(/\//g, "-")
+        .replace(/\+/g, "_");
+}
