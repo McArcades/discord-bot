@@ -40,7 +40,7 @@ export const initializeRoutes = (expressApp: Express, client: Client, db: Db) =>
         }
 
         await linkMinecraftAccount(guildMember.user.id, uuid, db);
-        const role = guild.roles.cache.find((role) => role.id === process.env.ROLE_LINKED_ID);
+        const role = (await guild.roles.fetch()).filter((r) => r.id === process.env.ROLE_LINKED_ID).first();
         if (role) await guildMember.roles.add(role);
         else console.error("Could not assign LINKED role to " + tag);
 
