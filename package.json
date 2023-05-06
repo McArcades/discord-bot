@@ -4,7 +4,7 @@
     "description": "McArcades' Discord Bot",
     "main": "src/app.ts",
     "scripts": {
-        "start": "ts-node src/app.ts",
+        "start": "ts-node src/start.ts",
         "build": "npx tsc",
         "test": "jest --coverage",
         "prepare": "husky install"

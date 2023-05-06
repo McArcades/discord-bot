@@ -56,7 +56,3 @@ export async function main() {
     // client auth
     await client.login(process.env.BOT_TOKEN);
 }
-
-main().then(() => {
-    console.info("App started.");
-});
