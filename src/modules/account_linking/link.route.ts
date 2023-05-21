@@ -1,15 +1,10 @@
-import { Express, Request, Response } from "express";
-import { fetchFromDiscordID, getTagHash, linkMinecraftAccount } from "../model/entities/member";
+import Route from "../../model/route";
 import { Client, EmbedBuilder } from "discord.js";
 import { Db } from "mongodb";
+import { Express, Request, Response } from "express";
+import { fetchFromDiscordID, getTagHash, linkMinecraftAccount } from "../../model/entities/member";
 
-export const initializeRoutes = (expressApp: Express, client: Client, db: Db) => {
-    // Test route
-    expressApp.get("/", (req: Request, res: Response) => {
-        res.status(200).send("McArcades Discord Bot API");
-    });
-
-    // Minecraft account link
+const route: Route = (client: Client, db: Db, expressApp: Express) => {
     expressApp.get("/link-account/:tag/:hash/:uuid", async (req: Request, res: Response) => {
         const tag = req.params.tag.replace("@", "#"),
             hash = req.params.hash,
@@ -56,6 +51,6 @@ export const initializeRoutes = (expressApp: Express, client: Client, db: Db) =>
 
         res.status(200).send("User linked successfully.");
     });
-
-    expressApp.listen(process.env.API_PORT);
 };
+
+export default route;

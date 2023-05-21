@@ -6,7 +6,6 @@ import assert from "assert";
 import { getFilesRecursive } from "./helper/utils";
 import Command from "./model/command";
 import express, { Express } from "express";
-import { initializeRoutes } from "./helper/routes";
 
 async function initDiscordClient(): Promise<Client> {
     return new Client({
@@ -25,10 +24,10 @@ async function initDatabaseClient(): Promise<Db> {
     return await connect(process.env.MONGODB_URI);
 }
 
-async function initModules(client: Client, db: Db, commands: Collection<string, Command>): Promise<void> {
+async function initModules(client: Client, db: Db, commands: Collection<string, Command>, expressApp: Express): Promise<void> {
     const handlersDir = `${__dirname}/helper/handlers`;
 
-    for (const file of getFilesRecursive(handlersDir)) (await import(`${file}`)).default(client, db, commands);
+    for (const file of getFilesRecursive(handlersDir)) (await import(`${file}`)).default(client, db, commands, expressApp);
 }
 
 export async function main() {
@@ -45,13 +44,13 @@ export async function main() {
 
     // init bot modules
     console.debug("Initializing modules...");
-    const commands = new Collection<string, Command>();
-    await initModules(client, db, commands);
-
-    // init api
-    console.debug("Initializing API...");
     const expressApp: Express = express();
-    initializeRoutes(expressApp, client, db);
+    const commands = new Collection<string, Command>();
+    await initModules(client, db, commands, expressApp);
+
+    // init API
+    console.debug("Initializing API...");
+    expressApp.listen(process.env.API_PORT);
 
     // client auth
     await client.login(process.env.BOT_TOKEN);

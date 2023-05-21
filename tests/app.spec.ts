@@ -1,7 +1,6 @@
 import * as app from "../src/app";
 import { Db } from "mongodb";
 import { connect } from "../src/helper/database";
-import * as routes from "../src/helper/routes";
 
 jest.mock("../src/helper/database", () => ({
     connect: jest.fn().mockResolvedValue({} as Db),
@@ -25,6 +24,15 @@ jest.mock("discord.js", () => {
     };
 });
 
+jest.mock("express", () => {
+    return jest.fn(() => ({
+        listen: jest.fn(),
+        get: jest.fn(),
+        post: jest.fn(),
+        use: jest.fn(),
+    }));
+});
+
 describe("App entry point", () => {
     beforeAll(() => {
         jest.spyOn(console, "debug").mockImplementation(() => {
@@ -42,28 +50,11 @@ describe("App entry point", () => {
     it("should connect to the database", async () => {
         // Given
         const connectSpy = jest.spyOn({ connect }, "connect");
-        jest.spyOn(routes, "initializeRoutes").mockImplementation(() => {
-            /* no-op */
-        });
 
         // When
         await app.main();
 
         // Then
         expect(connectSpy).toHaveBeenNthCalledWith(1, process.env.MONGODB_URI);
-    });
-
-    it("should start the API", async () => {
-        // Given
-        jest.spyOn({ connect }, "connect");
-        const apiInitSpy = jest.spyOn(routes, "initializeRoutes").mockImplementation(() => {
-            /* no-op */
-        });
-
-        // When
-        await app.main();
-
-        // Then
-        expect(apiInitSpy).toHaveBeenCalled();
     });
 });
