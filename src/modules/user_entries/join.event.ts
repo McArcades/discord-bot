@@ -6,7 +6,7 @@ import { createCanvas, loadImage } from "canvas";
 import sharp from "sharp";
 import axios from "axios";
 
-export async function createWelcomeImage(member: User): Promise<string> {
+async function createWelcomeImage(member: User): Promise<string> {
     // Creating canvas
     const outPath = "./tmp/bienvenue.png";
     const width = 1024,
