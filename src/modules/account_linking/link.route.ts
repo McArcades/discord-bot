@@ -21,7 +21,14 @@ const route: Route = (client: Client, db: Db, expressApp: Express) => {
             return;
         }
 
-        const guildMember = (await guild.members.fetch()).filter((m) => m.user.tag === tag).first();
+        const username = tag.split("#")[0];
+        const discriminator = tag.split("#")[1];
+        const guildMember = (await guild.members.fetch())
+            .filter((m) => {
+                return m.user.username === username && m.user.discriminator === discriminator;
+            })
+            .first();
+
         if (!guildMember) {
             res.status(400).send("Member is not in the guild.");
             return;
