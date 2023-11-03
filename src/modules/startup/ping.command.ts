@@ -9,7 +9,6 @@ const pingCommand: Command = {
         await interaction.reply({
             embeds: [
                 new EmbedBuilder()
-                    .setAuthor({ name: "McArcades" })
                     .setDescription("🏓 Pong !")
                     .setFooter({ text: `RTT = ${interaction.client.ws.ping}ms` })
                     .setColor("#ff8e4d"),

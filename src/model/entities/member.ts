@@ -35,6 +35,12 @@ export async function linkMinecraftAccount(discordID: string, uuid: string, db: 
     }
 }
 
+export async function addToBeta(member: Member, db: Db) {
+    await db
+        .collection(`${process.env.DATABASE_PREFIX}${COLLECTION_NAME}`)
+        .updateOne({ DiscordID: member.discordID }, { $set: { PrivateBetaAccess: true } });
+}
+
 function mapToMember(dbResult: any): Member | null {
     if (!dbResult) return null;
     return {
