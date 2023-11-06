@@ -1,0 +1,49 @@
+name: Build
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Fetch tag
+        id: tag
+        run: echo "::set-output name=TAG::$(echo ${{ github.ref }} | sed 's/refs\/tags\///')"
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            --build-arg ENVIRONMENT=${{ secrets.ENVIRONMENT }} \
+            --build-arg BOT_CLIENT_ID=${{ secrets.BOT_CLIENT_ID }} \
+            --build-arg BOT_TOKEN=${{ secrets.BOT_TOKEN }} \
+            --build-arg API_PORT=${{ secrets.API_PORT }} \
+            --build-arg MONGODB_URI=${{ secrets.MONGODB_URI }} \
+            --build-arg DATABASE_PREFIX=${{ secrets.DATABASE_PREFIX }} \
+            --build-arg PERSPECTIVE_API_TOKEN=${{ secrets.PERSPECTIVE_API_TOKEN }} \
+            --build-arg TAG_SALT=${{ secrets.TAG_SALT }} \
+            --build-arg GUILD_ID=${{ secrets.GUILD_ID }} \
+            --build-arg ROLE_PLAYER_ID=${{ secrets.ROLE_PLAYER_ID }} \
+            --build-arg ROLE_LINKED_ID=${{ secrets.ROLE_LINKED_ID }} \
+            --build-arg CHANNEL_WELCOME_ID=${{ secrets.CHANNEL_WELCOME_ID }} \
+            -t ghcr.io/mcarcades/discord-bot:${{ steps.tag.outputs.TAG }} .
+        env:
+          TAG: ${{ steps.tag.outputs.TAG }}
+
+      - name: Login to GitHub Packages
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Push Docker image to GitHub Packages
+        if: success()
+        run: |
+          docker push ghcr.io/mcarcades/discord-bot:${{ steps.tag.outputs.TAG }}
