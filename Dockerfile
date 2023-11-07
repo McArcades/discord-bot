@@ -1,7 +1,5 @@
 FROM node:20.9.0-alpine
 
-WORKDIR /app
-
 # Install dependencies
 COPY package*.json ./
 RUN apk add --no-cache python3 make g++ && \
@@ -10,7 +8,6 @@ RUN apk add --no-cache python3 make g++ && \
 
 # Copy sources and build
 COPY . ./
-RUN npm run build
 
 # Set up environment variables
 ARG ENVIRONMENT=production
@@ -42,4 +39,4 @@ ENV CHANNEL_WELCOME_ID=${CHANNEL_WELCOME_ID}
 
 # Run the app
 EXPOSE ${API_PORT}
-CMD [ "node", "dist/app.js" ]
+CMD [ "npm", "run", "start" ]
