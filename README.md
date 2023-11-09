@@ -2,6 +2,7 @@
 
 [![License](https://img.shields.io/github/license/McArcades/discord-bot?style=for-the-badge)](https://github.com/McArcades/discord-bot/blob/master/LICENSE)
 [![GitHub tag (with filter)](https://img.shields.io/github/v/tag/McArcades/discord-bot?style=for-the-badge&label=Latest%20release)](https://github.com/McArcades/discord-bot/tags)
+[![Production status](https://img.shields.io/website?down_color=red&down_message=Down&label=Production%20status&style=for-the-badge&up_color=green&up_message=Up&url=https%3A%2F%2Fdiscord-api.mcarcades.fr/health%2F)](#mcarcades-discord-bot)
 
 [![Workflow](https://img.shields.io/github/actions/workflow/status/McArcades/discord-bot/test.yml?style=for-the-badge&label=Test)](https://github.com/McArcades/discord-bot/actions)
 [![Workflow](https://img.shields.io/github/actions/workflow/status/McArcades/discord-bot/build.yml?style=for-the-badge&label=Build%20and%20deploy)](https://github.com/McArcades/discord-bot/actions)
