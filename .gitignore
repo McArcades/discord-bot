@@ -109,3 +109,5 @@ cypress/screenshots/
 cypress/videos/
 
 .swc/
+
+tmp/
