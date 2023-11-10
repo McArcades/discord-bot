@@ -1,6 +1,6 @@
 {
     "name": "mcarcades-discord-bot",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "description": "McArcades' Discord Bot",
     "main": "src/app.ts",
     "scripts": {
