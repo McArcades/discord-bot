@@ -80,7 +80,7 @@ const onJoin: Event = {
         if (!guild) return;
 
         const channel = guild.channels.cache.get(process.env.CHANNEL_WELCOME_ID || "");
-        if (!channel || !channel.isTextBased()) return;
+        if (!channel?.isTextBased()) return;
 
         // Player role
         const role = guild.roles.cache.find((role) => role.id === process.env.ROLE_PLAYER_ID || "");
