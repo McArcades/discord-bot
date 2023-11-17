@@ -38,6 +38,7 @@ jobs:
             --build-arg ROLE_PLAYER_ID=${{ secrets.ROLE_PLAYER_ID }} \
             --build-arg ROLE_LINKED_ID=${{ secrets.ROLE_LINKED_ID }} \
             --build-arg ROLE_MODERATOR_ID=${{ secrets.ROLE_MODERATOR_ID }} \
+            --build-arg ROLE_ADMINISTRATOR_ID=${{ secrets.ROLE_ADMINISTRATOR_ID }} \
             --build-arg CHANNEL_WELCOME_ID=${{ secrets.CHANNEL_WELCOME_ID }} \
             --build-arg CHANNEL_STAFF_ALERT_ID=${{ secrets.CHANNEL_STAFF_ALERT_ID }} \
             -t ghcr.io/mcarcades/discord-bot:${{ steps.tag.outputs.TAG }} .

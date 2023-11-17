@@ -15,6 +15,7 @@ declare global {
             ROLE_PLAYER_ID: string;
             ROLE_LINKED_ID: string;
             ROLE_MODERATOR_ID: string;
+            ROLE_ADMINISTRATOR_ID: string;
             CHANNEL_WELCOME_ID: string;
             CHANNEL_STAFF_ALERT_ID: string;
         }
