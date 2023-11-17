@@ -1,7 +1,7 @@
 import { Client, Events, Message } from "discord.js";
 import Event from "../../model/event";
 import { Db } from "mongodb";
-import { getToxicity, punishMessage, ToxicityResult, warnMessage } from "./toxicity.service";
+import { getToxicity, punishMessage, timeoutUser, ToxicityResult, warnMessage } from "./toxicity.service";
 
 const onMessage: Event = {
     name: Events.MessageCreate,
@@ -14,6 +14,7 @@ const onMessage: Event = {
 
         if (score > 0.75) {
             await punishMessage(client, message, toxicity);
+            await timeoutUser(client, message.author, message.content);
         } else if (score > 0.5) {
             await warnMessage(client, message, toxicity);
         }

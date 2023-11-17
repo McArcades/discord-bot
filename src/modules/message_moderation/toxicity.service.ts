@@ -1,5 +1,7 @@
-import { Client, Message } from "discord.js";
+import { Client, Message, User } from "discord.js";
 import { sendStaffAlert } from "../../helper/message_utils";
+
+const TOXICITY_TIMEOUT_DURATION_MS = 10 * 60 * 1000;
 
 const ATTRIBUTES: string[] = [
     "TOXICITY",
@@ -65,4 +67,14 @@ export const warnMessage = async (client: Client, message: Message, toxicity: To
             `"*${message.content}*"\n\n` +
             `||\`${JSON.stringify(toxicity)}\`||`
     );
+};
+
+export const timeoutUser = async (client: Client, user: User, message: string): Promise<void> => {
+    const guild = client.guilds.cache.get(process.env.GUILD_ID ?? "");
+    if (!guild) return;
+
+    const guildMember = (await guild.members.fetch()).filter((m) => m.user.id === user.id).first();
+    if (!guildMember) return;
+
+    await guildMember.timeout(TOXICITY_TIMEOUT_DURATION_MS, `Automatic timeout for toxicity : "${message}".`);
 };
