@@ -27,6 +27,7 @@ jobs:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           MONGODB_URI: "mongodb://user:pass@localhost/db"
           PERSPECTIVE_API_TOKEN: "abc"
+          OPENAI_API_TOKEN: "abc"
           TAG_SALT: "abc"
           DATABASE_PREFIX: "abc"
           GUILD_ID: "123"
