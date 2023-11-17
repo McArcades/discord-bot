@@ -8,6 +8,7 @@ declare global {
             BOT_TOKEN: string;
             MONGODB_URI: string;
             PERSPECTIVE_API_TOKEN: string;
+            OPENAI_API_TOKEN: string;
             TAG_SALT: string;
             DATABASE_PREFIX: string;
             API_PORT: string;
@@ -18,6 +19,7 @@ declare global {
             ROLE_ADMINISTRATOR_ID: string;
             CHANNEL_WELCOME_ID: string;
             CHANNEL_STAFF_ALERT_ID: string;
+            FORBIDDEN_SUBJECTS: string;
         }
     }
 }
