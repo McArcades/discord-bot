@@ -6,6 +6,14 @@ RUN apk add --no-cache python3 make g++ && \
     apk add --no-cache cairo-dev pango-dev giflib-dev && \
     npm ci
 
+# Install fonts
+RUN mkdir -p /usr/share/fonts/truetype/lato
+ADD https://github.com/google/fonts/raw/main/ofl/lato/Lato-Regular.ttf /usr/share/fonts/truetype/lato/
+ADD https://github.com/google/fonts/raw/main/ofl/lato/Lato-Bold.ttf /usr/share/fonts/truetype/lato/
+ADD https://github.com/google/fonts/raw/main/ofl/lato/Lato-Italic.ttf /usr/share/fonts/truetype/lato/
+ADD https://github.com/google/fonts/raw/main/ofl/lato/Lato-BoldItalic.ttf /usr/share/fonts/truetype/lato/
+RUN fc-cache -f -v
+
 # Copy sources and build
 COPY . ./
 
